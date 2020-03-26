@@ -1,4 +1,4 @@
-package com.vendingMachine.vendingMachine.helpers;
+package com.vendingMachine.vendingMachine.model;
 
 import java.io.Serializable;
 
@@ -6,8 +6,10 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 @Embeddable
+public
 class BrandStockKey implements Serializable {
  
+
 	private static final long serialVersionUID = 1L;
 
 	@Column(name = "brand_id")
@@ -16,7 +18,7 @@ class BrandStockKey implements Serializable {
     @Column(name = "vendingMachine_id")
     Long vendingMachineId;
     
-    
+    public BrandStockKey() {}
 
 	public BrandStockKey(Long brandId, Long vendingMachineId) {
 		super();
@@ -58,9 +60,4 @@ class BrandStockKey implements Serializable {
 			return false;
 		return true;
 	}
-	
-	
-
-
-
 }

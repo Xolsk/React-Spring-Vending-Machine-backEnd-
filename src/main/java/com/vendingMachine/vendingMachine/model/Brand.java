@@ -1,5 +1,6 @@
 package com.vendingMachine.vendingMachine.model;
 
+import java.math.BigDecimal;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -8,14 +9,13 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.vendingMachine.vendingMachine.helpers.BrandStock;
 
 @Entity
 public class Brand {
 	
 	@Id @GeneratedValue long brandId;
 	String name;
-	double price;
+	BigDecimal price;
 	@OneToMany(mappedBy = "brand")
 	@JsonIgnore
 	Set<BrandStock> brandStock;
@@ -23,11 +23,25 @@ public class Brand {
 	public Brand() {}
 	
 	
-	public Brand(String name, double price, Set<BrandStock> stock) {
+	public Brand(String name, BigDecimal price, Set<BrandStock> stock) {
 		super();
 		this.setName(name);
+		this.setPrice(price);
+		this.setBrandStock(stock);
+	}
+	
+	public BigDecimal getPrice() {
+		return price;
+	}
+
+	
+	public void setPrice(BigDecimal price) {
 		this.price = price;
-		this.brandStock = stock;
+	}
+
+
+	public String getName() {
+		return name;
 	}
 	
 	
@@ -35,6 +49,16 @@ public class Brand {
 		this.name = name;
 	}
 	
+	
+	public Set<BrandStock> getBrandStock() {
+		return brandStock;
+	}
+
+
+	public void setBrandId(long brandId) {
+		this.brandId = brandId;
+	}
+
 	
 	public long getBrandId() {
 		return brandId;
@@ -45,5 +69,4 @@ public class Brand {
 		this.brandStock = stock;
 	}
 	
-
 }

@@ -1,4 +1,4 @@
-package com.vendingMachine.vendingMachine.helpers;
+package com.vendingMachine.vendingMachine.model;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -6,6 +6,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.vendingMachine.vendingMachine.model.Brand;
 import com.vendingMachine.vendingMachine.model.VendingMachine;
 
@@ -14,6 +15,7 @@ public
 class BrandStock {
  
     @EmbeddedId
+    @JsonIgnore
     BrandStockKey id;
  
     @ManyToOne
@@ -24,6 +26,7 @@ class BrandStock {
     @ManyToOne
     @MapsId("vendingMachine_id")
     @JoinColumn(name = "vendingMachine_id")
+    @JsonIgnore
     VendingMachine vendingMachine;
  
     private int stock;
@@ -39,6 +42,32 @@ class BrandStock {
 		this.setStock(stock);
 	}
 	
+	public Brand getBrand() {
+		return brand;
+	}
+
+
+	public void setBrand(Brand brand) {
+		this.brand = brand;
+	}
+
+	public void setId(BrandStockKey id) {
+		this.id = id;
+	}
+	
+	public BrandStockKey getId() {
+		return id;
+	}
+
+
+	public VendingMachine getVendingMachine() {
+		return vendingMachine;
+	}
+
+	public void setVendingMachine(VendingMachine vendingMachine) {
+		this.vendingMachine = vendingMachine;
+	}
+	
 	public int getStock() {
 		return stock;
 	}
@@ -47,12 +76,10 @@ class BrandStock {
 		this.stock = stock;
 	}
 	
-	public VendingMachine getVendingMachine() {
-		return vendingMachine;
-	}
 	
-	public void setVendingMachine(VendingMachine vendingMachine) {
-		this.vendingMachine = vendingMachine;
-	}
+
+
+
+
 	
 }
