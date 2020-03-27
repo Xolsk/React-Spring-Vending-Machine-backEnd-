@@ -87,7 +87,8 @@ public class VendingMachineController {
 			  Boolean itFits= selectedMachine.get().checkCapacity(currentCoinCapacity);
 			  int checkMaxAmount=selectedMachine.get().getMaxMoneyInserted().compareTo(selectedMachine.get().getInsertedCoinValue());
 		  
-			  if (itFits && checkMaxAmount==1) {
+			  if (itFits && checkMaxAmount==1)
+			  {
 				  
 				BigDecimal newCoinAmount =selectedMachine.get().addCoin(coin);
 			  	vendingMachineRepository.save(selectedMachine.get());
@@ -97,7 +98,7 @@ public class VendingMachineController {
 			  	return ResponseEntity.ok().body(allGood);
 			  } 
 			  
-			  if (itFits==false) {errorMessage="Machine is full of Coins, cant take no more";}
+			  if (itFits==false) {errorMessage="Machine is full of Coins, cant take no more. Your money of " +coin.getName() + " is returned";}
 			  if  (checkMaxAmount<1) {errorMessage="Machine is not accepting more coins because there "
 			  		+ "is already enough money to do its maximum purchase";} 
 		  }
