@@ -10,6 +10,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.vendingMachine.vendingMachine.helpers.CoinSize;
@@ -20,6 +21,7 @@ public class Coin {
 
 	@Id @GeneratedValue long coinId;
 	String name;
+	
 	BigDecimal value;
 	
 	@Enumerated(EnumType.STRING)
@@ -27,6 +29,7 @@ public class Coin {
 	CoinSize size;
 	@OneToMany(mappedBy = "coin")
 	@JsonIgnore
+	 @OrderBy("value")
 	Set<CoinStock> stock;
 	@OneToMany(mappedBy = "coin")
 	@JsonIgnore

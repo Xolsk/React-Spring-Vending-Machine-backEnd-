@@ -99,9 +99,8 @@ public class VendingMachineController {
 			  
 			  if (itFits==false) {errorMessage="Machine is full of Coins, cant take no more";}
 			  if  (checkMaxAmount<1) {errorMessage="Machine is not accepting more coins because there "
-			  		+ "is already enough money";} 
+			  		+ "is already enough money to do its maximum purchase";} 
 		  }
-		
 		
 		ResponseGenerator badRequest = new ResponseGenerator (selectedMachine.get().getInsertedCoinValue(),errorMessage);	
 		return ResponseEntity.ok().body(badRequest);		
@@ -115,10 +114,21 @@ public class VendingMachineController {
 		Optional<VendingMachine> selectedMachine = vendingMachineRepository.findById(Long.parseLong(vendingMachineId));
 		Optional<Brand> selectedBrand = brandController.find(brandId);
 		String errorMessage="";
+		String changeMessage="No Change is returned.";
+		
+		if (selectedMachine.get().getInsertedCoinValue().compareTo(selectedBrand.get().getPrice())==1)
+		{
+			changeMessage=coinStockController.generateChange(selectedMachine.get(),selectedBrand.get());
+			if (changeMessage=="No change Available")
+			{
+				ResponseGenerator badRequest = new ResponseGenerator(null,changeMessage);
+				return ResponseEntity.badRequest().body(badRequest);
+
+			}
+		}
 		
 		if (selectedMachine.isPresent() && selectedBrand.isPresent())
-		{
-			
+		{	
 			boolean enoughMoneyInserted = brandController.checkPrice(selectedMachine.get(),selectedBrand.get());
 			boolean enoughStockAvailable = brandStockController.checkStock(selectedMachine.get(),selectedBrand.get());
 			
@@ -126,21 +136,22 @@ public class VendingMachineController {
 			{
 				brandStockController.removeOne(selectedMachine.get(),selectedBrand.get());
 				int stock = brandStockController.findStock(selectedMachine.get(),selectedBrand.get());
-				coinStockController.generateChange(selectedMachine.get(),selectedBrand.get());
+				
 				coinPoolController.emptyPool(selectedMachine.get());
 				selectedMachine.get().EmptyMachine();
 				vendingMachineRepository.save(selectedMachine.get());
-				ResponseGenerator sendProduct = new ResponseGenerator(selectedBrand.get(),stock,"You have received an item");
+				ResponseGenerator sendProduct = new ResponseGenerator
+				(
+				selectedBrand.get(),stock,"You have received a delicious" + selectedBrand.get().getName()+"." + changeMessage
+				);
 				return ResponseEntity.ok().body(sendProduct);
-			}
-			
+			}		
 			if (!enoughMoneyInserted) {errorMessage="Please insert more coins for the selected product.";}
-			if (!enoughStockAvailable) {errorMessage="Product out of Stock.";}
-			
+			if (!enoughStockAvailable) {errorMessage="Product out of Stock.";}	
 		}	
-		ResponseGenerator notSent = new ResponseGenerator(null,errorMessage);
+		ResponseGenerator badRequest = new ResponseGenerator(null,errorMessage);
 		
-		return ResponseEntity.badRequest().body(notSent);	
+		return ResponseEntity.badRequest().body(badRequest);	
 	}
 
 	
@@ -167,10 +178,11 @@ public class VendingMachineController {
 			
 			selectedMachine.get().EmptyMachine();
 			coinStockController.clearPoolFromStock(toReturn);
+			String message = coinPoolController.getCoinsAsSttring(selectedMachine.get());
 			coinPoolController.emptyPool(selectedMachine.get());
 			vendingMachineRepository.save(selectedMachine.get());
 			
-			return ResponseEntity.ok().body("Coins Returned") ;
+			return ResponseEntity.ok().body("Coins Returned " + message);
 		}
 		
 		return ResponseEntity.badRequest().body("Something Went Wrong");

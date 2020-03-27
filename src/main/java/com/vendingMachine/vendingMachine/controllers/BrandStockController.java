@@ -45,14 +45,13 @@ public class BrandStockController {
 	}
 
 	public boolean checkStock(VendingMachine vendingMachine, Brand brand)
-	{
-		
+	{	
 		Optional<BrandStock> brandStock = brandStockRepository.findByVendingMachineAndBrand(vendingMachine,brand);
 		
-		if (brandStock.isPresent()) {
-			
-			if ( brandStock.get().getStock()>0) return true;
-		}
+		if (brandStock.isPresent() && brandStock.get().getStock()>0)
+		{
+			 return true;
+		}	
 		return false ;		
 	}
 
@@ -68,8 +67,11 @@ public class BrandStockController {
 	}
 
 	public int findStock(VendingMachine vendingMachine, Brand brand) {
+		
 		Optional <BrandStock> stock = brandStockRepository.findByVendingMachineAndBrand(vendingMachine,brand);
-		if (stock.isPresent()) {
+		
+		if (stock.isPresent()) 
+		{
 			return stock.get().getStock();
 		}
 		return 0;

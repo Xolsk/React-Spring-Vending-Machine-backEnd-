@@ -27,8 +27,7 @@ public class CoinController {
 	
 	@GetMapping("/")
 	 Collection<Coin> getAllCoins () {
-		return (Collection<Coin>) coinRepository.findAll();
-			
+		return (Collection<Coin>) coinRepository.findAll();			
 	}
 
 	

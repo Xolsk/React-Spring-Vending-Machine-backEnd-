@@ -2,6 +2,8 @@ package com.vendingMachine.vendingMachine.controllers;
 
 import java.math.BigDecimal;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -94,26 +96,54 @@ public class CoinStockController {
 	}
 
 
-	public void generateChange(VendingMachine vendingMachine, Brand brand) {
+	public String generateChange(VendingMachine vendingMachine, Brand brand) {
 		
+			BigDecimal dueAmount =vendingMachine.getInsertedCoinValue().subtract(brand.getPrice());
+			Collection<CoinStock> currentMachineStock = coinStockRepository.findByVendingMachine(vendingMachine);
+			String message="The returned change is: ";
+			int sentCoins=0;
+			
+			for (CoinStock coinStock: currentMachineStock)
+			{
+				if ((dueAmount.compareTo(coinStock.getCoin().getValue())>=0) && coinStock.getStock()>0)
+				{
+					while (dueAmount.compareTo(coinStock.getCoin().getValue())>=0 && coinStock.getStock()>0){
+					coinStock.setStock(coinStock.getStock()-1);
+					dueAmount = dueAmount.subtract(coinStock.getCoin().getValue());
+					sentCoins++;	
+					}
+				message= message + sentCoins + "coins of " + coinStock.getCoin().getName()+",";
+				sentCoins=0;
+				}
 
-			//TODO!!!!
+			}
+			if (dueAmount.compareTo(BigDecimal.ZERO)==1)
+			{
+				return "No Change Available";
+			}
+			else {
+				for (CoinStock coinStock :currentMachineStock)
+				{
+					coinStockRepository.save(coinStock);
+				}
+			}
 		
+		return message;
 	}
 
 
 	public void clearPoolFromStock(Collection<CoinPool> toReturn) {
 
 		for (CoinPool coin: toReturn) {
-			Optional<CoinStock> toModify = coinStockRepository.findByVendingMachineAndCoin(coin.getVendingMachine(), coin.getCoin());
+			Optional<CoinStock> toModify = coinStockRepository.findByVendingMachineAndCoin(coin.getVendingMachine(),
+			coin.getCoin());
+			
 			if (toModify.isPresent())
 			{
 				toModify.get().setStock(toModify.get().getStock()-coin.getAmountInsideMachine());
 				coinStockRepository.save(toModify.get());
 			}
 		}
-		
-		
 	}
 
 }

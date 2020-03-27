@@ -49,18 +49,29 @@ public class CoinPoolController {
 			coin.setAmountInsideMachine(0);
 			coinPoolRepository.save(coin);
 		}
-		
-		
-
-	
 	}
 
 
 	public Collection<CoinPool> getPool(VendingMachine vendingMachine) {
+		
 		Collection<CoinPool> foundPool = coinPoolRepository.findByVendingMachine(vendingMachine);
 		
-		return foundPool;
+		return foundPool;	
+	}
+
+
+	public String getCoinsAsSttring(VendingMachine vendingMachine) {
+		Collection<CoinPool> foundPool = coinPoolRepository.findByVendingMachine(vendingMachine);
+		String message=":";
 		
+		for (CoinPool coin : foundPool)
+		{
+			if (coin.getAmountInsideMachine()>0)
+			{
+				message= message + (coin.getAmountInsideMachine() + " "+ coin.getCoin().getName()+ " coins, ");
+			}
+		}
+		return message;
 	}
 
 }

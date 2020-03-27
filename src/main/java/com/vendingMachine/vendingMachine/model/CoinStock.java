@@ -1,5 +1,6 @@
 package com.vendingMachine.vendingMachine.model;
 
+
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -37,6 +38,8 @@ public class CoinStock {
 		this.coin = coin;
 		this.vendingMachine = vendingMachine;
 		this.stock = stock;
+
+
 	}
 	
 	public CoinStockKey getId() {

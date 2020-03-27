@@ -51,15 +51,14 @@ public class DemoMachineLoader implements CommandLineRunner {
 	Coin fiftyCents = new Coin("50c", BigDecimal.valueOf(0.50), null,CoinSize.MEDIUM,null);
 	Coin euro= new Coin("1e", BigDecimal.valueOf(1), null, CoinSize.BIG,null);
 	Coin twoEuro = new Coin("2e", BigDecimal.valueOf(2), null,CoinSize.BIG,null);
-	
-	coinRepository.save(fiveCents);
-	coinRepository.save(tenCents);
-	coinRepository.save(twentyCents);
-	coinRepository.save(fiftyCents);
-	coinRepository.save(euro);
+
 	coinRepository.save(twoEuro);
-	
-	
+	coinRepository.save(euro);
+	coinRepository.save(fiftyCents);
+	coinRepository.save(twentyCents);
+	coinRepository.save(tenCents);
+	coinRepository.save(fiveCents);
+
 	VendingMachine model01=new VendingMachine("Model01", 6, 10,null, null,220,BigDecimal.valueOf(2),null);
 	
 	
@@ -80,16 +79,16 @@ public class DemoMachineLoader implements CommandLineRunner {
     vendingMachineRepository.save(model01);
 
     BrandStockKey keyforCola = new BrandStockKey(cocaCola.getBrandId(),model01.getVendingMachineid());
-	BrandStock cocaColaForModel01 = new BrandStock(keyforCola,cocaCola,model01,10);
+	BrandStock cocaColaForModel01 = new BrandStock(keyforCola,cocaCola,model01,2);
 	
     BrandStockKey keyforColaLight = new BrandStockKey(cocaColaLight.getBrandId(),model01.getVendingMachineid());
-	BrandStock cocaColaLightForModel01 = new BrandStock(keyforColaLight,cocaColaLight,model01,10);  
+	BrandStock cocaColaLightForModel01 = new BrandStock(keyforColaLight,cocaColaLight,model01,1);  
 	
     BrandStockKey keyforFantaN = new BrandStockKey(fantaN.getBrandId(),model01.getVendingMachineid());
 	BrandStock fantaNForModel01 = new BrandStock(keyforFantaN,fantaN,model01,10);  
 	
     BrandStockKey keyforFantaL = new BrandStockKey(fantaL.getBrandId(),model01.getVendingMachineid());
-	BrandStock fantaLForModel01 = new BrandStock(keyforFantaL,fantaL,model01,10);  
+	BrandStock fantaLForModel01 = new BrandStock(keyforFantaL,fantaL,model01,0);  
 	
     BrandStockKey keyforAquarius = new BrandStockKey(aquarius.getBrandId(),model01.getVendingMachineid());
 	BrandStock aquariusForModel01 = new BrandStock(keyforAquarius,aquarius,model01,10);  
@@ -122,12 +121,12 @@ public class DemoMachineLoader implements CommandLineRunner {
 	CoinStockKey keyFor2e=new CoinStockKey(twoEuro.getCoinId(),model01.getVendingMachineid());
 	CoinStock twoEuroForModel01=new CoinStock(keyFor2e,fiveCents,model01,0);
 	
-	coinStockRepository.save(fiveCentsForModel01);
-	coinStockRepository.save(tenCentsForModel01);
-	coinStockRepository.save(twentyCentsForModel01);
-	coinStockRepository.save(fiftyCentsForModel01);
-	coinStockRepository.save(euroForModel01);
 	coinStockRepository.save(twoEuroForModel01);
+	coinStockRepository.save(euroForModel01);
+	coinStockRepository.save(fiftyCentsForModel01);
+	coinStockRepository.save(twentyCentsForModel01);
+	coinStockRepository.save(tenCentsForModel01);
+	coinStockRepository.save(fiveCentsForModel01);
 
   	
     }
