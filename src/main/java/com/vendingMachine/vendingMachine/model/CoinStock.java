@@ -29,6 +29,7 @@ public class CoinStock {
 	 VendingMachine vendingMachine;
 	 
 	 int stock;
+	 int maxStock;
 	 
 	public CoinStock() {}
 
@@ -38,7 +39,7 @@ public class CoinStock {
 		this.coin = coin;
 		this.vendingMachine = vendingMachine;
 		this.stock = stock;
-
+		this.maxStock=60;
 
 	}
 	
